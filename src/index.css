@@ -11,38 +11,37 @@
   margin-bottom: 10px;
 }
 
-.firstname-input input, .lastname-input input, .gender-input input{
+.firstname-input input, .lastname-input input, input{
+  border-radius: 5px;
+  padding: 5px;
+  width: 250px;
+}
+
+.gender-input select{
   border-radius: 5px;
   padding: 5px;
   width: 250px;
 }
 
 .firstname-input label{
-  /* margin-right: 10px; */
   margin-left: -170px;
   font-family: Arial, sans-serif;
   font-weight: bold;
 }
 
 .lastname-input label{
-  /* margin-right: 12px; */
   margin-left: -175px;
   font-family: Arial, sans-serif;
   font-weight: bold;
 }
 
 .gender-input label{
-  /* margin-right: 35px; */
   margin-left: -200px;
   font-family: Arial, sans-serif;
   font-weight: bold;
 }
 
-.btn {
-  border-radius: 10px;
-}
-
-.btn button {
+.btn{
   border-radius: 50px;
   font-weight: bold;
   padding: 5px;

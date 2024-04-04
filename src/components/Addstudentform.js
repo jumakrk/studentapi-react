@@ -1,65 +1,84 @@
-import { useState } from "react";
+import React, { useState } from 'react';
 import axios from 'axios';
-import { ToastContainer, toast } from "react-toastify";
-import  "react-toastify/dist/ReactToastify.css";
-import '../index.css'
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const Create  = () => {
-  const [data, setData] = useState({
-    firstname: "", 
-    lastname: "", 
-    gender: ""
-  });
-  
-  const handleChange=(e) => {
-    const {name, value} = e.target;
-    setData((prev)=>{
-      return {...prev, [name] : value};
-    })
-  }
+const AddstudentForm = () => {
+const [formData, setFormData] = useState({
+    firstname: '',
+    lastname: '',
+    gender: '',
+});
 
-  const handleSubmit=(e) => {
-    e.preventDefault()
-    axios.post("http://localhost:4000/", data) //use our own custom Api for our DB to add students to the DB
-    .then(res=>{
-    toast.success("New student added sucessfully", 
-    {position: toast.POSITION.TOP_RIGHT,
-     autoClose: 3000
-      })
-    })
-    .catch(err=>{
-     toast.error("Error adding new student",
-     {position: toast.POSITION.TOP_RIGHT,
-      autoClose: 3000
-      })
-    })
-  }
-
-  return(
-<div className="student-form">
-  <form onSubmit={handleSubmit}>
-   {/* firstname */}
-     <div className="firstname-input">
-       <label>First Name</label><br/>
-       <input type="text" required name="firstname" value={data.firstname} onChange={handleChange}/><br/>
-     </div>
-     {/* lastname */}
-     <div className="lastname-input">
-       <label>Last Name</label><br/>
-       <input type="text" required name="lastname" value={data.lastname} onChange={handleChange}/><br/>
-     </div>
-     {/* gender */}
-     <div className="gender-input">
-       <label>Gender</label> <br/>
-       <input type="text" required name="gender" value={data.gender} onChange={handleChange}/>
-     </div>
-     {/* submit button */}
-     <div className="btn">
-       <button>Add Student</button>
-       <ToastContainer/>
-     </div>
-  </form>
-</div>
-  )
+const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+    ...prevState,
+    [name]: value
+    }));
 };
-export default Create;
+
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+    await axios.post('http://localhost:4000/api/student/addStudent', formData);
+    toast.success('Student added successfully!');
+    setFormData({
+        firstname: '',
+        lastname: '',
+        gender: '',
+    });
+    } catch (error) {
+    console.error('Error adding student:', error);
+    toast.error('Failed to add student. Please try again.');
+    }
+};
+
+return (
+    <div className="student-form">
+    <form onSubmit={handleSubmit}>
+        <h2>Add Student</h2>
+        <div className='firstname-input'>
+        <label htmlFor="firstname">First Name:</label>
+        <input
+            type="text"
+            id="firstname"
+            name="firstname"
+            value={formData.firstname}
+            onChange={handleChange}
+            required
+        />
+        </div>
+        <div className='lastname-input'>
+        <label htmlFor="lastname">Last Name:</label>
+        <input
+            type="text"
+            id="lastname"
+            name="lastname"
+            value={formData.lastname}
+            onChange={handleChange}
+            required
+        />
+        </div>
+        <div className="gender-input">
+        <label htmlFor="gender">Gender:</label>
+        <select
+            id="gender"
+            name="gender"
+            value={formData.gender}
+            onChange={handleChange}
+            required
+        >
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
+        </div>
+        <button className='btn' type="submit">Add Student</button>
+    </form>
+    <ToastContainer />
+    </div>
+);
+};
+
+export default AddstudentForm;
